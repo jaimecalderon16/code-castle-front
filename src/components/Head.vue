@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts" type="component">
 import { Navbar, NavbarLogo, NavbarCollapse, NavbarLink } from 'flowbite-vue'
 
 const email = ref();
@@ -14,9 +14,9 @@ const password = ref();
       </template>
       <template #default="{isShowMenu}">
         <NavbarCollapse :isShowMenu="isShowMenu">
-          <NavbarLink isActive link="#">Home</NavbarLink>
-          <NavbarLink link="#">Services</NavbarLink>
-          <NavbarLink link="#">Pricing</NavbarLink>
+          <NavbarLink  isActive link="#">Aplicaciones</NavbarLink>
+          <NavbarLink link="#">Juegos</NavbarLink>
+          <NavbarLink link="#">Top</NavbarLink>
           <NavbarLink link="#">Contact</NavbarLink>
         </NavbarCollapse>
       </template>
@@ -29,5 +29,6 @@ const password = ref();
     position: fixed;
     top: 0;
     right: 0;   
+    z-index: 10;
 }
 </style>

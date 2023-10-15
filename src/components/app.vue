@@ -35,7 +35,7 @@ const password = ref<string>('');
 
 <template>
   <div>
-    <the-card class="w-full">
+    <the-card class="w-full mb-3" >
       <Avatar style="margin: 0 auto;" size="xl" :img="props.item.imagen" class="mr-2.5" />
       <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ props.item.nombre }}</h5>
       <p class="font-sans text-gray-600 dark:text-gray-500">{{ props.item.version }}</p>

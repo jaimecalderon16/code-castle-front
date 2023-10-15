@@ -10,5 +10,55 @@
     {
       "path": "./tsconfig.cypress-ct.json"
     }
+  ],
+  "compilerOptions": {
+  "baseUrl": "./",
+  "paths": {
+    "@/*": [
+      "src/*"
+    ],
+    "@themeConfig": [
+      "themeConfig.ts"
+    ],
+    "@layouts/*": [
+      "src/@layouts/*"
+    ],
+    "@layouts": [
+      "src/@layouts"
+    ],
+    "@core/*": [
+      "src/@core/*"
+    ],
+    "@core": [
+      "src/@core"
+    ],
+    "@images/*": [
+      "src/assets/images/*"
+    ],
+    "@styles/*": [
+      "src/styles/*"
+    ],
+    "@axios": [
+      "src/plugins/axios"
+    ],
+    "@validators": [
+      "src/@core/utils/validators"
+    ]
+  }
+},
+  "include": [
+    "vite.config.*",
+    "env.d.ts",
+    "shims.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "themeConfig.ts",
+    "auto-imports.d.ts",
+    "components.d.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "src/@iconify/*"
   ]
 }
