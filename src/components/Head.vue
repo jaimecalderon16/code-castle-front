@@ -8,8 +8,8 @@ const password = ref();
 <template>
     <Navbar class="head">
       <template #logo>
-        <NavbarLogo  alt="Flowbite logo" image-url="https://flowbite.com/docs/images/logo.svg">
-          Flowbite
+        <NavbarLogo  alt="codeCastle logo"  image-url="../codeCastleLogo.png ">
+          Code Castle
         </NavbarLogo>
       </template>
       <template #default="{isShowMenu}">
