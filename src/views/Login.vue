@@ -1,17 +1,232 @@
 <script setup lang="ts">
-import { TheCard, Input, Button  } from 'flowbite-vue'
+import { ref } from 'vue';
+import {  Button  } from 'flowbite-vue'
 
 const email = ref();
 const password = ref();
+
+const submitForm = () => {
+  console.log(password.value, 'email', email.value);
+  
+}
 </script>
 
 <template>
-    <div class="w-80" style="margin: 0 auto;">
-      <the-card>
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Login</h5>
-        <Input type="email" v-model="email" placeholder="your@email.com" label="Correo" />
-        <Input type="password" v-model="password" placeholder="password" label="Contraseña" />
-        <Button class="mt-3">Entrar</Button>
-      </the-card>
+
+<div class="box">
+  <span class="borderLine"></span>
+  <form @submit.prevent="">
+    <h2>Sign In</h2>
+    <div class="inputBox">
+      <input v-model="email" type="text" required="required">
+      <span>Correo</span>
+      <i></i>
     </div>
+    <div class="inputBox">
+      <input v-model="password" type="password" required="required">
+      <span>Password</span>
+      <i></i>
+    </div>
+    <div class="links">
+      <a href="#">Forgot Password</a>
+      <a href="#">Signup</a>
+    </div>
+    <Button @click="submitForm()" gradient="purple-blue" outline>Iniciar secesión</Button>
+  </form>
+</div>
 </template>
+
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&family=Syne:wght@800&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.box {
+  margin: 0 auto;
+  position: relative;
+  width: 400px;
+  height: 470px;
+  max-width: 100%;
+  background: #1c1c1c;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.box::before {
+  content: "";
+  position: absolute;
+  width: 4000px;
+  height: 470px;
+  top: -50%;
+  left: -50%;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent,
+    #45f3ff,
+    #45f3ff,
+    #45f3ff
+  );
+  z-index: 1;
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+}
+
+.box::after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 470px;
+  top: -50%;
+  left: -50%;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent,
+    #ffff00,
+    #ffff00,
+    #ffff00
+  );
+  z-index: 1;
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+  animation-delay: -3s;
+}
+
+.borderLine {
+  position: absolute;
+  top: 0;
+  inset: 0;
+}
+
+.borderLine::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 470px;
+  top: -50%;
+  left: -50%;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent,
+    #fc0f8d,
+    #fc0f8d,
+    #fc0f8d
+  );
+  z-index: 1;
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.box form {
+  position: absolute;
+  inset: 4px;
+  background: #222;/*  */
+  padding: 50px 40px;
+  border-radius: 18px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.box form h2 {
+  color: #fff;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+
+.box form .inputBox {
+  position: relative;
+  width: 300px;
+  margin-top: 35px;
+}
+
+.box form .inputBox input {
+  position: relative;
+  width: 100%;
+  padding: 20px 10px 10px;
+  background: transparent;
+  outline: none;
+  border: none;
+  box-shadow: none;
+  color: #23242a;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  z-index: 10;
+}
+
+ .box form .inputBox span {
+  position: absolute;
+  left: 0;
+  padding: 20px 0px 10px;
+  pointer-events: none;
+  color: #8f8f8f;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+} 
+
+.box form .inputBox input:valid ~ span,
+.box form .inputBox input:focus ~ span {
+  color: #fff;
+  font-size: 0.75em;
+  transform: translateY(-34px);
+} 
+
+.box form .inputBox i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  border-radius: 7px;
+  overflow: hidden;
+  transition: 0.5s;
+  pointer-events: none;
+}
+
+.box form .inputBox input:valid ~ i,
+.box form .inputBox input:focus ~ i {
+  height: 44px;
+}
+
+.box form .links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.box form .links a {
+  margin: 15px 12px 20px 0;
+  font-size: 0.75em;
+  color: #8f8f8f;
+  text-decoration: none;
+} 
+.box form .links a:hover {
+  text-decoration: underline;
+} 
+
+button{
+  width: 47%;
+  padding: 3px 0;
+}
+
+</style>

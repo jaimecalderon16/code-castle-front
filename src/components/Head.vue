@@ -1,8 +1,6 @@
 <script setup lang="ts" type="component">
 import { Navbar, NavbarLogo, NavbarCollapse, NavbarLink } from 'flowbite-vue'
 
-const email = ref();
-const password = ref();
 </script>
 
 <template>

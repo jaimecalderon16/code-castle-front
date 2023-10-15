@@ -73,6 +73,8 @@ const appsArray = [{
         </vs-col>
       </vs-row>
     </div>
+    <Button gradient="purple-blue" outline>Purple to blue</Button>
+
     <modal></modal>
   </div>
 </template>
