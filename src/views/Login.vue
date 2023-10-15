@@ -2,18 +2,25 @@
 import { ref } from 'vue';
 import {  Button  } from 'flowbite-vue'
 
+const action = ref('login');
 const email = ref();
 const password = ref();
+const password2 = ref();
+const name = ref();
+const phone = ref();
 
 const submitForm = () => {
   console.log(password.value, 'email', email.value);
-  
 }
+const changeScreen = (scren: string) => {
+  action.value = scren
+}
+
 </script>
 
 <template>
 
-<div class="box">
+<div class="box" v-if=" action == 'login'">
   <span class="borderLine"></span>
   <form @submit.prevent="">
     <h2>Sign In</h2>
@@ -29,11 +36,49 @@ const submitForm = () => {
     </div>
     <div class="links">
       <a href="#">Forgot Password</a>
-      <a href="#">Signup</a>
+      <a href="#" @click="changeScreen('signup')">Signup</a>
     </div>
     <Button @click="submitForm()" gradient="purple-blue" outline>Iniciar secesión</Button>
   </form>
 </div>
+
+<div class="box boxSignUp" v-if="action == 'signup'">
+  <span class="borderLine"></span>
+  <form @submit.prevent="">
+    <h2>Signup</h2>
+    <div class="inputBox">
+      <input v-model="name" type="text" required="required">
+      <span>Nombre y Apellido:</span>
+      <i></i>
+    </div>
+    <div class="inputBox">
+      <input v-model="email" type="text" required="required">
+      <span>Correo</span>
+      <i></i>
+    </div>
+    <div class="inputBox">
+      <input v-model="password" type="password" required="required">
+      <span>Contraseña</span>
+      <i></i>
+    </div>
+    <div class="inputBox">
+      <input v-model="password2" type="password" required="required">
+      <span>Repetir Contraseña</span>
+      <i></i>
+    </div>
+    <div class="inputBox">
+      <input v-model="phone" type="number" required="required">
+      <span>Telefono</span>
+      <i></i>
+    </div>
+    <div class="links">
+      <a href="#">Forgot Password</a>
+      <a href="#" @click="changeScreen('login')">Sign In</a>
+    </div>
+    <Button @click="submitForm()" gradient="purple-blue" outline>&nbsp;&nbsp;&nbsp;&nbsp;Registrarse&nbsp;&nbsp;&nbsp;&nbsp;</Button>
+  </form>
+</div>
+
 </template>
 
 <style scoped>
@@ -55,6 +100,10 @@ const submitForm = () => {
   background: #1c1c1c;
   border-radius: 18px;
   overflow: hidden;
+}
+
+.boxSignUp{
+  height: 690px;
 }
 
 .box::before {
