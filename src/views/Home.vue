@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Head from '../components/Head.vue'
 import Body from '../components/app.vue'
+import subHead from '../components/subHead.vue'
 import { TheCard, Input, Button  } from 'flowbite-vue'
 import Modal from '../components/Modal.vue'
 
@@ -66,6 +67,7 @@ const appsArray = [{
 <template>
     <div style="width: 100%;">
     <Head></Head>
+      <subHead></subHead>
     <div class="containerListApss">
       <vs-row >
         <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="3" v-for="item in appsArray">
@@ -73,7 +75,6 @@ const appsArray = [{
         </vs-col>
       </vs-row>
     </div>
-    <Button gradient="purple-blue" outline>Purple to blue</Button>
 
     <modal></modal>
   </div>
