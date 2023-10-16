@@ -12,9 +12,12 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faDownload } from '@fortawesome/free-solid-svg-icons'
 library.add(faDownload)
 
+const pinia = createPinia()
+
+
 const app = createApp(App)
 .component('font-awesome-icon', FontAwesomeIcon)
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 app.use(Vuesax)
 

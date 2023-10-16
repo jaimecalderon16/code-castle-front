@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { AuthenticationStore } from '@/stores/AuthentiacationStore'
+const authentication = AuthenticationStore()
+
 import { ref } from 'vue';
 import {  Button  } from 'flowbite-vue'
 
@@ -9,9 +12,15 @@ const password2 = ref();
 const name = ref();
 const phone = ref();
 
-const submitForm = () => {
+const submitForm = (type: string) => {
   console.log(password.value, 'email', email.value);
+  if ( type === 'login') {
+    authentication.login({email: email.value, password: password.value})
+  }else{
+    authentication.register({email: email.value, password: password.value, name: name.value, phone: phone.value})
+  }
 }
+
 const changeScreen = (scren: string) => {
   action.value = scren
 }
@@ -38,7 +47,7 @@ const changeScreen = (scren: string) => {
       <a href="#">Forgot Password</a>
       <a href="#" @click="changeScreen('signup')">Signup</a>
     </div>
-    <Button @click="submitForm()" gradient="purple-blue" outline>Iniciar secesión</Button>
+    <Button @click="submitForm('login')" gradient="purple-blue" outline>Iniciar secesión</Button>
   </form>
 </div>
 
@@ -75,7 +84,7 @@ const changeScreen = (scren: string) => {
       <a href="#">Forgot Password</a>
       <a href="#" @click="changeScreen('login')">Sign In</a>
     </div>
-    <Button @click="submitForm()" gradient="purple-blue" outline>&nbsp;&nbsp;&nbsp;&nbsp;Registrarse&nbsp;&nbsp;&nbsp;&nbsp;</Button>
+    <Button @click="submitForm('singup')" gradient="purple-blue" outline>&nbsp;&nbsp;&nbsp;&nbsp;Registrarse&nbsp;&nbsp;&nbsp;&nbsp;</Button>
   </form>
 </div>
 
