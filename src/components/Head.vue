@@ -6,7 +6,7 @@ import { Navbar, NavbarLogo, NavbarCollapse, NavbarLink } from 'flowbite-vue'
 <template>
     <Navbar class="head">
       <template #logo>
-        <NavbarLogo  alt="codeCastle logo"  image-url="../codeCastleLogo.png ">
+        <NavbarLogo  alt="codeCastle logo"  image-url="/codeCastleLogo.png ">
           Code Castle
         </NavbarLogo>
       </template>

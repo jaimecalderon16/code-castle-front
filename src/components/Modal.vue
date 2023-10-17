@@ -40,7 +40,7 @@ const props = defineProps({
 
 <template>
     <div >
-        <div class="block mt-5 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 max-w-6xl">
+        <div class="block mt-5 p-4 mb-4 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 max-w-6xl">
             <vs-row>
               <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
                 <vs-row>
@@ -50,7 +50,7 @@ const props = defineProps({
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
                       <Button gradient="cyan-blue">
                           <template #prefix>
-                              <font-awesome-icon icon="fa-solid fa-download" />
+                            <img  src="/download.svg"/>
                           </template> Descargar Apk
                       </Button>
                     </vs-col>

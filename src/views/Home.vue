@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import Head from '../components/Head.vue'
-import Body from '../components/app.vue'
+import Footer from '../components/Footer.vue'
+import app from '../components/app.vue'
+import Comentarios from '../components/Comentarios.vue'
 import subHead from '../components/subHead.vue'
 import { TheCard, Input, Button  } from 'flowbite-vue'
 import Modal from '../components/Modal.vue'
@@ -62,6 +65,7 @@ const appsArray = [{
   }
   ]
 
+const currentx = ref(1)
 </script>
 
 <template>
@@ -70,18 +74,31 @@ const appsArray = [{
       <subHead></subHead>
     <div class="containerListApss">
       <vs-row >
-        <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="3" v-for="item in appsArray">
-          <Body :item="item" ></Body>
+        <vs-divider  position="left"> <span class="text-xl font-dm  tracking-tight text-gray-900 dark:text-slate-300">Apps</span></vs-divider>
+        <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12" >
+          <h3 class="text-4xl font-dm  tracking-tight text-gray-900 dark:text-slate-300">¡Aplicaciones gratis!</h3>
+        </vs-col>
+        <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12" >
+          <p class="text-gray-600 mb-1 font-dm dark:text-gray-300">Descarga aplicaciones para ver <span class="text-cyan-500">películas</span>,<span class="text-cyan-500"> descargar videos</span>, y más</p>
+        </vs-col>
+        <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12" >
+          <span class="font-bold text-gray-600 mb-4  font-dm dark:text-gray-300">¡Todas tus Apps favoritas están aquí!</span>
+        </vs-col>
+        <vs-col vs-type="flex" vs-justify="start" vs-align="center" :key="index" vs-w="3" v-for="(item, index) in appsArray">
+          <app :item="item" ></app>
         </vs-col>
       </vs-row>
+      <vs-pagination  v-model="page" :length="20" />
     </div>
-
+    <Comentarios></Comentarios>
     <modal></modal>
+    <Footer></Footer>
   </div>
 </template>
 <style scoped>
 .containerListApss{
-  padding-top: 10rem;
+  padding-top: 7rem;
+  margin: 0 auto;
   width: 55rem;
 }
 
