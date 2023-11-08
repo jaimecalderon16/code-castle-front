@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { AuthenticationStore } from '@/stores/AuthentiacationStore'
+import { useToast } from "../composables/useToast";
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const toast = useToast();
+
 const authentication = AuthenticationStore()
 
 import { ref } from 'vue';
@@ -12,12 +17,17 @@ const password2 = ref();
 const name = ref();
 const phone = ref();
 
-const submitForm = (type: string) => {
+const submitForm = async (type: string) => {
   console.log(password.value, 'email', email.value);
   if ( type === 'login') {
-    authentication.login({email: email.value, password: password.value})
+    await authentication.login({email: email.value, password: password.value})
+    
   }else{
-    authentication.register({email: email.value, password: password.value, name: name.value, phone: phone.value})
+    if(password2.value == password.value){
+      authentication.register({email: email.value, password: password.value, name: name.value, phone: phone.value})
+    }else{
+      toast.toast("Error", 'Las contraseñas no coinciden', "danger");
+    }
   }
 }
 
@@ -47,7 +57,7 @@ const changeScreen = (scren: string) => {
       <a href="#">Forgot Password</a>
       <a href="#" @click="changeScreen('signup')">Signup</a>
     </div>
-    <Button @click="submitForm('login')" gradient="purple-blue" outline>Iniciar secesión</Button>
+    <Button @click="submitForm('login')" gradient="purple-blue" outline>Iniciar sesión</Button>
   </form>
 </div>
 

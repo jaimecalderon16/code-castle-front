@@ -6,6 +6,7 @@ import type ILogin from "@/interfaces/ILogin";
 import type IRegister from "@/interfaces/IRegister";
 import { usePreloadStore } from '@/stores/usePreloadStore';
 
+
 const toast = useToast();
 
 export const AuthenticationStore = defineStore("authentication", {
@@ -14,7 +15,7 @@ export const AuthenticationStore = defineStore("authentication", {
     token: "" as string,
     user: {} as IAuth,
   }),
-  //persist: true,
+  persist: true,
   actions: {
     async logout(): Promise<void> {
       this.$reset();
@@ -25,16 +26,17 @@ export const AuthenticationStore = defineStore("authentication", {
       preload.isLoading = true;
 
       try {
-        const result = await axiosIns.post("/login", formulario);
+        const result = await axiosIns.post("/login/", formulario);
         preload.isLoading = false;
 
         this.isAuthenticated = true;
         this.user = result.data.user;
-        this.token = result.data.token;
 
         toast.toast("Éxito", result.data.message, "success");
 
-        return true;
+        this.router.push({ name: 'home' });
+        console.log(this.user);
+        
       } catch (error) {
         preload.isLoading = false;
         console.error(error);
@@ -51,7 +53,7 @@ export const AuthenticationStore = defineStore("authentication", {
       preload.isLoading = true;
 
       try {
-        const result = await axiosIns.post("/register", formulario);
+        const result = await axiosIns.post("/users", formulario);
         preload.isLoading = false;
 
         if (result.data.code === 200) {
