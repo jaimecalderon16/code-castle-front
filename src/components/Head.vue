@@ -1,6 +1,7 @@
 <script setup lang="ts" type="component">
 import { Navbar, NavbarLogo, NavbarCollapse, NavbarLink, Avatar } from 'flowbite-vue'
-
+import { AuthenticationStore } from '@/stores/AuthentiacationStore'
+const authenticationStore = AuthenticationStore()
 </script>
 
 <template>
@@ -20,7 +21,9 @@ import { Navbar, NavbarLogo, NavbarCollapse, NavbarLink, Avatar } from 'flowbite
         </NavbarCollapse>
     </template>
     <template #right-side>
-      <Avatar img="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" rounded />
+      <RouterLink to="user">
+        <vs-avatar size="30px" href="users" :src="authenticationStore.user.image"/>
+      </RouterLink>
     </template>
   </Navbar>
 </template>
