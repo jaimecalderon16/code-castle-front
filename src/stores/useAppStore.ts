@@ -11,9 +11,14 @@ const toast = useToast();
 
 export const AuthenticationStore = defineStore("authentication", {
   state: () => ({
-    isAuthenticated: false as boolean,
-    token: "" as string,
-    user: {} as IAuth,
+    formulario: {
+        n_downloads: null,
+        upload_date: null,
+        download_link: '',
+        description: '',
+        application_name: ''
+    },
+    arrayApps: []
   }),
   persist: true,
   actions: {
@@ -21,26 +26,18 @@ export const AuthenticationStore = defineStore("authentication", {
       this.$reset();
     },
 
-    async login(formulario: any): Promise<boolean> {
+    async findAll() {
       const preload = usePreloadStore();
       preload.isLoading = true;
 
       try {
-        const result = await axiosIns.post("/login/", formulario);
+        const result = (await axiosIns.post("/apps/create", this.formulario));
         preload.isLoading = false;
-
-        this.isAuthenticated = true;
-        this.user = result.data.user;
-
+        this.arrayApps = result.data.apps
         toast.toast("Éxito", result.data.message, "success");
-
-        this.router.push({ name: 'home' });
-        console.log(this.user);
         
       } catch (error) {
         preload.isLoading = false;
-        console.error(error);
-
         this.$reset();
         toast.toast("Error", error.response.data.message, "danger");
 
@@ -48,12 +45,12 @@ export const AuthenticationStore = defineStore("authentication", {
       }
     },
 
-    async register(formulario: IRegister): Promise<object> {
+    async store(): Promise<object> {
       const preload = usePreloadStore();
       preload.isLoading = true;
 
       try {
-        const result = await axiosIns.post("/users", formulario);
+        const result = await axiosIns.post("/users", this.formulario);
         preload.isLoading = false;
 
         if (result.data.code === 200) {
