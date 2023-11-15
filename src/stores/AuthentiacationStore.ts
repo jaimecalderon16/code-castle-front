@@ -19,6 +19,7 @@ export const AuthenticationStore = defineStore("authentication", {
   actions: {
     async logout(): Promise<void> {
       this.$reset();
+      this.router.push({ name: 'login' });
     },
 
     async login(formulario: any): Promise<boolean> {

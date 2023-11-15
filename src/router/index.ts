@@ -13,6 +13,18 @@ const routes = [
     name: 'home',
     meta: { requiresAuth: true },
     component: () => import('../views/Home.vue')
+  },
+  {
+    path: '/user',
+    name: 'user',
+    meta: { requiresAuth: true },
+    component: () => import('../views/user.vue')
+  },
+  {
+    path: '/app',
+    name: 'app',
+    meta: { requiresAuth: true },
+    component: () => import('../views/App.vue')
   }
 ]
 const router = createRouter({
@@ -26,7 +38,7 @@ router.beforeEach((to, from, next) => {
     // Verifica si el usuario está autenticado
     if (!authenticationStore.isAuthenticated) {
       // Si no está autenticado, redirige a la página de inicio de sesión
-      next({ name: 'Home' })
+      next({ name: 'login' })
     } else {
       // Si está autenticado, permite el acceso
       next()

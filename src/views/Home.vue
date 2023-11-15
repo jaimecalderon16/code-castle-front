@@ -3,10 +3,8 @@ import { ref } from 'vue'
 import Head from '../components/Head.vue'
 import Footer from '../components/Footer.vue'
 import app from '../components/app.vue'
-import Comentarios from '../components/Comentarios.vue'
 import subHead from '../components/subHead.vue'
 import { TheCard, Input, Button  } from 'flowbite-vue'
-import Modal from '../components/Modal.vue'
 
 
 const appsArray = [{
@@ -90,8 +88,7 @@ const currentx = ref(1)
       </vs-row>
       <vs-pagination  v-model="page" :length="20" />
     </div>
-    <Comentarios></Comentarios>
-    <modal></modal>
+    
     <Footer></Footer>
   </div>
 </template>
