@@ -27,6 +27,10 @@ const remove = (item: number) => {
       chips.value.splice(chips.value.indexOf(item), 1)
 }
 
+const save = async() => {
+    await appStore.save();
+}
+
 </script>
 
 <template>
@@ -70,7 +74,7 @@ const remove = (item: number) => {
                     <Input v-model="formulario.download_link"  label="Link de descarga:" placeholder="https://link.com"  />
                 </vs-col>
                 <vs-col vs-align="center" vs-w="12" >
-                    <Select v-model="formulario.download_link" :options="categories"  placeholder="Por favor seleccione una" label="Seleccione una categoría"  />
+                    <Select v-model="formulario.categoria_id" :options="categories"  placeholder="Por favor seleccione una" label="Seleccione una categoría"  />
                 </vs-col>
                 <vs-col vs-align="center" vs-w="12" >
                     <vs-col vs-align="center" vs-w="8" >
@@ -88,6 +92,7 @@ const remove = (item: number) => {
                         v-for="chip in chips" closable close-icon="delete">
                         {{ chip }}
                     </vs-chip>
+                    <Button @click="save()" color="green" style="margin: 1rem;">Guardar</Button>    
                 </vs-col>
             </vs-row>
         </vs-col>
