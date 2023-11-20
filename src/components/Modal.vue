@@ -1,9 +1,16 @@
 <script setup lang="ts">
 
-import { defineProps } from 'vue';
+import { defineProps,ref } from 'vue';
 import {  Badge , Rating, Button ,Avatar} from 'flowbite-vue'
+import { useConfig } from '@/composables/useConfig'
+const configUse = ref(useConfig())
+
+import { useAppStore } from '@/stores/useAppStore'
+const appStore = useAppStore()
+
 
 interface Aplicacion {
+  id: string,
   imagen: string; // URL de la imagen
   nombre: string;
   descripcion: string;
@@ -21,6 +28,7 @@ const props = defineProps({
   item: {
     type: Object as () => Aplicacion,
     default: () => ({
+      id: '',
       imagen: 'https://static.vecteezy.com/system/resources/previews/006/541/759/original/spotify-logo-on-white-background-free-vector.jpg',
       nombre: 'Spotify',
       descripcion: 'Espotyfy, tu plataforma musical favorita. Explora millones de canciones, descubre nuevos artistas y crea listas de reproducción personalizadas. Disfruta de recomendaciones adaptadas a tu gusto y conecta con amigos. ¡Tu experiencia musical perfecta en un solo lugar!',
@@ -31,10 +39,16 @@ const props = defineProps({
       descargas: '500.000.000+',
       tamaño: '161.25 MB',
       requerimientos: 'Android 5.0+',
-      urlDescarga: 'https://spotify.uptodown.com/android/post-download/109645749'
+      urlDescarga: 'https://spotify.uptodown.com/android/post-download/109645749',
     })
   }
 });
+
+console.log(props.item, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+const downloadApp= (link) => {
+  appStore.saveDownload(props.item.id);
+  window.open(link, '_blank')
+}
 
 </script>
 
@@ -45,10 +59,10 @@ const props = defineProps({
               <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="4">
                 <vs-row>
                     <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-                      <Avatar style="margin: 0 auto;" size="xl" img="https://static.vecteezy.com/system/resources/previews/022/100/989/original/spotify-logo-transparent-free-png.png" class="mr-2.5" />
+                      <Avatar style="margin: 0 auto;" size="xl" :img="configUse.baseURL + props.item.imagen" class="mr-2.5" />
                     </vs-col>
-                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12">
-                      <Button gradient="cyan-blue">
+                    <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="12" class="mt-3">
+                      <Button @click="downloadApp(props.item.urlDescarga)" gradient="cyan-blue">
                           <template #prefix>
                             <img  src="/download.svg"/>
                           </template> Descargar Apk
@@ -62,11 +76,11 @@ const props = defineProps({
               <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="8">
                 <vs-row>
                   <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12">
-                        <h5 class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Espotyfy</h5>
+                        <h5 class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{{ props.item.nombre }}</h5>
                         <p class="ml-4 font-normal text-gray-700 dark:text-gray-400"> 14.2.0 </p>
                     </vs-col>
                   <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12">
-                    <Badge type="green">Red social</Badge>
+                    <Badge v-for="tag in props.item.tags" type="green">{{ tag.name }}</Badge>
                   </vs-col>
                   <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12">
                     <vs-row class="mt-3">

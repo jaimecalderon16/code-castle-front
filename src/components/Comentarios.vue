@@ -1,6 +1,50 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import { storeToRefs } from 'pinia'
+import {ref, onMounted, defineProps} from 'vue'
 import { TheCard, Avatar, Textarea, Button  } from 'flowbite-vue'
+import { useCommentStore } from '@/stores/useCommentStore'
+
+
+import { useConfig } from '@/composables/useConfig'
+const configUse = ref(useConfig())
+
+const commentStore = useCommentStore()
+const { formulario, comentsArray }= storeToRefs(commentStore);
+onMounted(async()=> {
+    await commentStore.ComentsList(props.appId)
+})
+
+const props = defineProps({
+    appId: Number,
+    appName: String
+})
+
+const saveComnet = async () => {
+    await commentStore.save(props.appId)
+}
+
+function convertirFecha(fechaString) {
+  // Crear un objeto de fecha a partir de la cadena de fecha
+  const fecha = new Date(fechaString);
+
+  // Obtener el día, mes y año
+  const dia = fecha.getDate();
+  const mes = obtenerNombreMes(fecha.getMonth() + 1); // Sumar 1 ya que los meses en JavaScript van de 0 a 11
+  const año = fecha.getFullYear();
+
+  // Crear la cadena de fecha en el formato deseado
+  const fechaFormateada = `${dia} de ${mes} de ${año}`;
+
+  return fechaFormateada;
+}
+
+function obtenerNombreMes(numeroMes) {
+  const meses = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+  ];
+  return meses[numeroMes - 1];
+}
 
 const message = ref() 
 </script>
@@ -9,26 +53,28 @@ const message = ref()
     <vs-row>
         <!-- Setion de comentarios -->
         <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12">
-            <h5 class="titleC text-xl font-dm font-bold  mb-5 tracking-tight text-gray-900 dark:text-slate-100">15 COMENTARIOS EN "WHATSAPP PLUS"</h5>
+            <h5 class="titleC text-xl font-dm font-bold  mb-5 tracking-tight text-gray-900 dark:text-slate-100"> {{ `${comentsArray.length} COMENTARIOS EN "${props.appName}"` }}</h5>
             <span ></span>
         </vs-col>
         <!-- comentario -->
         <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12">
             <vs-row>
-                <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="4">
-                    <Avatar img="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"></Avatar>
-                </vs-col>
-                <vs-col vs-type="flex" vs-justify="space-between" vs-align="start" vs-w="8">
-                  <vs-row>
-                    <vs-col vs-type="flex" vs-justify="space-between" vs-align="start" vs-w="8">
-                        <p class="font-dm text-2sm  font-bold text-slate-200 italic "><span class="text-cyan-600">Jaime andres</span> <span> dice:</span></p>
-                        <span class="text-sm font-dm font-bold text-slate-600">18 de julio de 2022 a las 6:38 PM</span>
+                <template v-for="comment in comentsArray">
+                    <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="4" class="mb-4">
+                        <Avatar :img="configUse.baseURL +  comment.user.img_path"></Avatar>
                     </vs-col>
-                    <vs-col vs-type="flex" vs-justify="space-between" vs-align="start" vs-w="8">
-                        <span class="font-dm text-2sm text-slate-300 ">Es muy buena y me gusta mucho porque puedo ber los estados eliminados y mensajes</span>
+                    <vs-col vs-type="flex" vs-justify="space-between" vs-align="start" vs-w="8" class="mb-4">
+                      <vs-row>
+                        <vs-col vs-type="flex" vs-justify="space-between" vs-align="start" vs-w="8">
+                            <p class="font-dm text-2sm  font-bold text-slate-200 italic "><span class="text-cyan-600">{{ comment.user.name }}</span> <span> dice:</span></p>
+                            <span class="text-sm font-dm font-bold text-slate-600"> {{ convertirFecha(comment.comment_date) }} </span>
+                        </vs-col>
+                        <vs-col vs-type="flex" vs-justify="space-between" vs-align="start" vs-w="8">
+                            <span class="font-dm text-2sm text-slate-300 ">{{ comment.comment }}</span>
+                        </vs-col>
+                      </vs-row>
                     </vs-col>
-                  </vs-row>
-                </vs-col>
+                </template>
             </vs-row>
         </vs-col>
 
@@ -40,10 +86,10 @@ const message = ref()
         <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12">
             <vs-row>
                 <vs-col vs-w="12">
-                    <Textarea rows="4" placeholder="Escribe tu mensaje..." v-model="message" label="Comentario *" />
+                    <Textarea rows="4" v-model="formulario.comment" placeholder="Escribe tu mensaje..."  label="Comentario *" />
                 </vs-col>
                 <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12" class="mt-4">
-                    <Button gradient="green-blue">Publicar comentario</Button>
+                    <Button gradient="green-blue" @click="saveComnet()">Publicar comentario</Button>
                 </vs-col>
             </vs-row>
         </vs-col>

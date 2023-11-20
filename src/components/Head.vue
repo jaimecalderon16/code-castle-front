@@ -14,10 +14,10 @@ const authenticationStore = AuthenticationStore()
     </template>
     <template #default="{isShowMenu}">
       <NavbarCollapse :isShowMenu="isShowMenu">
-          <NavbarLink  isActive link="#">Aplicaciones</NavbarLink>
+          <NavbarLink  isActive link="/home">Aplicaciones</NavbarLink>
           <NavbarLink link="#">Juegos</NavbarLink>
           <NavbarLink link="#">Top</NavbarLink>
-          <NavbarLink link="#">Contact</NavbarLink>
+          <NavbarLink link="#footer">Contact</NavbarLink>
         </NavbarCollapse>
     </template>
     <template #right-side>

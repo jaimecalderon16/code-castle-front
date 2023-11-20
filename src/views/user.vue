@@ -1,35 +1,59 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
-import { Input, Button, Textarea, Select } from 'flowbite-vue'
+import { useToast } from "../composables/useToast";
+import { Input, Button, Textarea, Select, FileInput } from 'flowbite-vue'
 import Head from '../components/Head.vue'
 import Footer from '../components/Footer.vue'
 import { AuthenticationStore } from '@/stores/AuthentiacationStore'
 import { useAppStore } from '@/stores/useAppStore'
 const authenticationStore = AuthenticationStore()
 const appStore = useAppStore()
+const toast = useToast();
+
 const {user} = storeToRefs(authenticationStore) 
-const {formulario, categories} = storeToRefs(appStore) 
+const {formulario, categories, tags} = storeToRefs(appStore) 
 const disabled = ref(true);
 const visualiceAppForm = ref(false);
 const chip = ref('');
-const chips = ref(['vuejs','asdss']);
 const app = ref({
     name: '',
 });
+const file = ref(null)
 
 const addTag = () => {
-    chips.value.push(chip.value)
+    tags.value.push(chip.value)
     chip.value = '';
 }
 
 const remove = (item: number) => {
-      chips.value.splice(chips.value.indexOf(item), 1)
+    tags.value.splice(tags.value.indexOf(item), 1)
 }
 
 const save = async() => {
     await appStore.save();
 }
+
+function checkFileExtension() {
+        // Verificar la extensión del archivo
+        if (file.value) {
+            const allowedExtensions = ['png', 'jpg', 'jpeg', 'gif'];
+            const extension = file.value.name.split('.').pop().toLowerCase();
+
+            if (!allowedExtensions.includes(extension)) {
+                // Log de error
+                toast.toast("Error", "Error: El archivo debe ser de tipo PNG o JPG", "danger");
+
+                file.value = null;
+            }else{
+                formulario.value.imgFile = file.value;
+            }
+        }
+    }
+
+onMounted(async () => {
+    await appStore.listCategory()    
+})
 
 </script>
 
@@ -64,11 +88,30 @@ const save = async() => {
             <vs-col v-if="visualiceAppForm" vs-type="flex"  vs-justify="center" vs-align="center" vs-w="8" class="mb-8">
             <vs-row>
                 <vs-col vs-align="center" vs-w="12" >
-                    <Input v-model="formulario.name"  label="Nombre app:" placeholder="App"  />
+                    <Input v-model="formulario.application_name"  label="Nombre app:" placeholder="App"  />
+                </vs-col>
+                <vs-col vs-align="center" vs-w="12" >
+                    <FileInput v-model="file" label="Icono de la app" accept="image/png,image/jpeg" @change="checkFileExtension">
+                        <p class="!mt-1 text-sm text-gray-500 dark:text-gray-300">
+                        PNG, JPG (MAX. 800x400px).
+                        </p>
+                    </FileInput>
                 </vs-col>
                 
                 <vs-col  vs-align="center" vs-w="12" >
                     <Textarea v-model="formulario.description" :rows="4" label="Descripción:" placeholder="App"  />
+                </vs-col>
+                <vs-col vs-align="center" vs-w="5" class="mr-8">
+                    <Input v-model="formulario.version"  label="Version" placeholder="1.12.1"  />
+                </vs-col>
+                <vs-col vs-align="center" vs-w="6" >
+                    <Input v-model="formulario.company"  label="Desarrolladora / Compañia" placeholder="Google LLC"  />
+                </vs-col>
+                <vs-col vs-align="center" vs-w="5" class="mr-8">
+                    <Input v-model="formulario.requirements"  label="Requisitos" placeholder="Android 8+"  />
+                </vs-col>
+                <vs-col vs-align="center" vs-w="6" >
+                    <Input v-model="formulario.size"  label="Tamaño" placeholder="889 MB"  />
                 </vs-col>
                 <vs-col vs-align="center" vs-w="12" >
                     <Input v-model="formulario.download_link"  label="Link de descarga:" placeholder="https://link.com"  />
@@ -88,8 +131,8 @@ const save = async() => {
                         <vs-chip
                         color="#8799AF"
                         :key="chip"
-                        @click="remove(chip)"
-                        v-for="chip in chips" closable close-icon="delete">
+                        @click="remove(tags)"
+                        v-for="chip in tags" closable close-icon="delete">
                         {{ chip }}
                     </vs-chip>
                     <Button @click="save()" color="green" style="margin: 1rem;">Guardar</Button>    

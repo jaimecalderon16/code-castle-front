@@ -17,22 +17,27 @@ export const useAppStore = defineStore("useAppStore", {
         application_name: '',
         description: '',
         download_link: '',
-        categories: Array,
-        tags: Array,
-    },
-    arrayApps: Array<object>,
-    categories: [
-        {value: '3', name: 'asdasd'},
-        {value: '2', name: 'asdasd'},
-        {value: '1', name: 'asdasd'},
-    ],
+        categories: [],
+        version: '',
+        company: '',
+        size: '',
+        requirements: '',
+        imgFile: File,
+      },
+    tags: [],
+    app: {},
+    arrayApps: [],
+    categories: [],
   }),
   actions: {
     async save(){
+      let formData = new FormData
       const preload = usePreloadStore();
+      for (const key in this.formulario) formData.append(key, this.formulario[key]);
+      formData.append('tags', JSON.stringify(this.tags))
       preload.isLoading = true;
       try {
-        const result = await axiosIns.post("/apps/create", this.formulario);
+        const result = await axiosIns.post("/apps/create", formData);
         preload.isLoading = false;
         this.arrayApps = result.data.apps;
 
@@ -47,31 +52,90 @@ export const useAppStore = defineStore("useAppStore", {
       }
     },
 
-    async search(appName: object){
+    async AppList(){
+      const preload = usePreloadStore();
+      try {
+        preload.isLoading = true;
+
+        const result = await axiosIns.get("/apps")
+        .then( (res) => {
+          preload.isLoading = false;
+          this.arrayApps = res.data.apps;
+        }
+        ).catch( (error) => {
+          preload.isLoading = false;
+          toast.toast("Error", error.response.data.message, "danger");
+        }
+        );
+      } catch (error) {
+          preload.isLoading = false;
+          toast.toast("Error", error.response.data.message, "danger");
+      }
+    },
+    async findApp(id){
+      try {
+        const result = await axiosIns.get("/apps/" +  id)
+        .then( (res) => {
+          this.app = res.data;
+        }
+        ).catch( (error) => {
+          toast.toast("Error", error.response.data.message, "danger");
+        }
+        );
+      } catch (error) {
+          toast.toast("Error", error.response.data.message, "danger");
+      }
+    },
+    async listCategory(){
+      try {
+        const result = await axiosIns.get("/categories")
+        .then( (res) => {
+          this.categories = res.data.categories;
+        }
+        ).catch( (error) => {
+          toast.toast("Error", error.response.data.message, "danger");
+        }
+        );
+      } catch (error) {
+          toast.toast("Error", error.response.data.message, "danger");
+      }
+    },
+    async saveDownload(appID){
+      try {
+        const result = await axiosIns.get("apps/download/" + appID)
+        .then( (res) => {
+          console.log(res);
+        }
+        ).catch( (error) => {
+          toast.toast("Error", error.response.data.message, "danger");
+        }
+        );
+      } catch (error) {
+          toast.toast("Error", error.response.data.message, "danger");
+      }
+    },
+    async searh(appName: string){
+      const preload = usePreloadStore();
 
       try {
-        const result = await axiosIns.post("/users", appName);
-        
-        if (result.data.code === 200) {
-            this.arrayApps = result.data.apps;
-        } else if (result.data.code === 500) {
-          toast.toast("Error", error.response.data.message, "danger");
+        preload.isLoading = true;
 
+        const result = await axiosIns.post("/apps/search", {name: appName})
+        .then( (res) => {
+          preload.isLoading = false;
+
+          this.arrayApps = res.data.apps;
         }
+        ).catch( (error) => {
+          preload.isLoading = false;
 
-        if (result.data.status === 422) {
           toast.toast("Error", error.response.data.message, "danger");
-
-          return { error: result.data.errors, status: result.data.status };
         }
-
-        return { status: result.data.code };
+        );
       } catch (error) {
+        preload.isLoading = false;
 
-        if (error.response && error.response.status === 500) {
           toast.toast("Error", error.response.data.message, "danger");
-
-        }
       }
     },
   },

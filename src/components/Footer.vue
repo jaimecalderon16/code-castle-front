@@ -4,7 +4,7 @@ import { Footer, FooterCopyright, FooterLinkGroup, FooterLink, FooterBrand } fro
 
 <template>
   <Footer footer-type="logo">
-    <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+    <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8" id="footer">
       <div class="sm:flex sm:items-center sm:justify-between">
         <FooterBrand href="https://codeCastle.com" src="/codeCastleLogo.png" alt="codeCastle Logo" name="Code Castle" />
           <span class="text-white">❤️ ¡Gracias por visitarnos!</span>

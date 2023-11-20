@@ -12,11 +12,17 @@ import Comentarios from '../components/Comentarios.vue'
 const authenticationStore = AuthenticationStore()
 const appStore = useAppStore()
 const {user} = storeToRefs(authenticationStore) 
-const {formulario, categories} = storeToRefs(appStore) 
-
+const {app} = storeToRefs(appStore) 
 
 const route = useRoute()
-console.log(route.query.id);
+const appId = ref<number>();
+appId.value = route.query.id
+
+onMounted(async() => {
+  await appStore.findApp(appId.value)
+  console.log(app.value, 'asdasdsadsadsadsad');
+  
+})
 
 </script>
 
@@ -24,8 +30,8 @@ console.log(route.query.id);
     <div style="width: 100%;">
     <Head></Head>
     <vs-row style="margin: 4rem 0;">
-        <modal></modal>
-        <Comentarios></Comentarios>
+        <modal :item="app"></modal>
+        <Comentarios :app-id="appId" :app-name="'App'"></Comentarios>
     </vs-row>
     <Footer></Footer>
   </div>

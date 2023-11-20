@@ -6,7 +6,7 @@ const appStore = useAppStore();
 const nameApp = ref('')
 
 const searchApp = async () => {
-  await appStore.search({name: nameApp.value})
+  await appStore.searh(nameApp.value)
 }
 </script>
 
