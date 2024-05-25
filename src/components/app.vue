@@ -42,7 +42,7 @@ const password = ref<string>('');
     <the-card class="w-full mb-3" >
       <Avatar style="margin: 0 auto;" size="xl" :img="urlBase + props.item.img_path" class="mr-2.5" />
       <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{{ props.item.name }}</h5>
-      <p class="font-sans text-gray-600 dark:text-gray-500">{{ props.item.version }}</p>
+      <p class="font-sans text-gray-600 dark:text-gray-500">Version: {{ props.item.version }}</p>
       <p class="font-normal text-gray-800 dark:text-gray-400">{{ props.item.comapy }}</p>
       <Rating :rating="props.item.calificacion" />
     </the-card>

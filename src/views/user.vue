@@ -11,6 +11,8 @@ const authenticationStore = AuthenticationStore()
 const appStore = useAppStore()
 const toast = useToast();
 
+
+
 const {user} = storeToRefs(authenticationStore) 
 const {formulario, categories, tags} = storeToRefs(appStore) 
 const disabled = ref(true);
@@ -19,7 +21,8 @@ const chip = ref('');
 const app = ref({
     name: '',
 });
-const file = ref(null)
+const fileImg = ref(null)
+const fileApp = ref(null)
 
 const addTag = () => {
     tags.value.push(chip.value)
@@ -34,21 +37,39 @@ const save = async() => {
     await appStore.save();
 }
 
-function checkFileExtension() {
+function checkFileExtension(allowedExtensions: any, isImage: boolean) {
         // Verificar la extensión del archivo
-        if (file.value) {
-            const allowedExtensions = ['png', 'jpg', 'jpeg', 'gif'];
-            const extension = file.value.name.split('.').pop().toLowerCase();
+        if(isImage){
+            if (fileImg.value) {
+            
+            const extension = fileImg.value.name.split('.').pop().toLowerCase();
 
             if (!allowedExtensions.includes(extension)) {
                 // Log de error
                 toast.toast("Error", "Error: El archivo debe ser de tipo PNG o JPG", "danger");
 
-                file.value = null;
+                fileImg.value = null;
             }else{
-                formulario.value.imgFile = file.value;
+                formulario.value.imgFile = fileImg.value;
             }
         }
+        }else{
+            if (fileApp.value) {
+            
+            const extension = fileApp.value.name.split('.').pop().toLowerCase();
+
+            if (!allowedExtensions.includes(extension)) {
+                // Log de error
+                toast.toast("Error", "Error: El archivo debe ser de tipo Zip,Exe o Apk", "danger");
+
+                fileApp.value = null;
+            }else{
+                formulario.value.appFile = fileApp.value;
+            }
+        }
+        }
+
+       
     }
 
 onMounted(async () => {
@@ -58,6 +79,7 @@ onMounted(async () => {
 </script>
 
 <template>
+
     <div style="width: 100%;">
     <Head></Head>
     <vs-row style="margin: 4rem 0;">
@@ -91,13 +113,19 @@ onMounted(async () => {
                     <Input v-model="formulario.application_name"  label="Nombre app:" placeholder="App"  />
                 </vs-col>
                 <vs-col vs-align="center" vs-w="12" >
-                    <FileInput v-model="file" label="Icono de la app" accept="image/png,image/jpeg" @change="checkFileExtension">
+                    <FileInput v-model="fileImg" label="Icono de la app" accept="image/*" @change="checkFileExtension(['png', 'jpg', 'jpeg', 'gif'], true)">
                         <p class="!mt-1 text-sm text-gray-500 dark:text-gray-300">
                         PNG, JPG (MAX. 800x400px).
                         </p>
                     </FileInput>
                 </vs-col>
-                
+                <vs-col vs-align="center" vs-w="12" >
+                    <FileInput v-model="fileApp" label="Archico Aplicacion"  accept="zip,.rar,.7zip" @change="checkFileExtension(['zip', 'exe', 'apk'], false)">
+                        <p class="!mt-1 text-sm text-gray-500 dark:text-gray-300">
+                        Exe,Zip,Apk  (MAX. 2GB).
+                        </p>
+                    </FileInput>
+                </vs-col>
                 <vs-col  vs-align="center" vs-w="12" >
                     <Textarea v-model="formulario.description" :rows="4" label="Descripción:" placeholder="App"  />
                 </vs-col>
@@ -110,12 +138,6 @@ onMounted(async () => {
                 <vs-col vs-align="center" vs-w="5" class="mr-8">
                     <Input v-model="formulario.requirements"  label="Requisitos" placeholder="Android 8+"  />
                 </vs-col>
-                <vs-col vs-align="center" vs-w="6" >
-                    <Input v-model="formulario.size"  label="Tamaño" placeholder="889 MB"  />
-                </vs-col>
-                <vs-col vs-align="center" vs-w="12" >
-                    <Input v-model="formulario.download_link"  label="Link de descarga:" placeholder="https://link.com"  />
-                </vs-col>
                 <vs-col vs-align="center" vs-w="12" >
                     <Select v-model="formulario.categoria_id" :options="categories"  placeholder="Por favor seleccione una" label="Seleccione una categoría"  />
                 </vs-col>
@@ -127,6 +149,7 @@ onMounted(async () => {
                         <Button @click="addTag()" color="green" >Agregar etiqueta</Button>        
                     </vs-col>
                 </vs-col>
+                
                 <vs-col class="mt-4" vs-align="center" vs-w="12" >
                         <vs-chip
                         color="#8799AF"
@@ -152,5 +175,4 @@ onMounted(async () => {
   margin: 0 auto;
   width: 55rem;
 }
-
 </style>

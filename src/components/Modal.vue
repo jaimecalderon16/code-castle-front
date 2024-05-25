@@ -5,6 +5,8 @@ import {  Badge , Rating, Button ,Avatar} from 'flowbite-vue'
 import { useConfig } from '@/composables/useConfig'
 const configUse = ref(useConfig())
 
+
+
 import { useAppStore } from '@/stores/useAppStore'
 const appStore = useAppStore()
 
@@ -29,7 +31,7 @@ const props = defineProps({
     type: Object as () => Aplicacion,
     default: () => ({
       id: '',
-      imagen: 'https://static.vecteezy.com/system/resources/previews/006/541/759/original/spotify-logo-on-white-background-free-vector.jpg',
+      imagen: 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png',
       nombre: 'Spotify',
       descripcion: 'Espotyfy, tu plataforma musical favorita. Explora millones de canciones, descubre nuevos artistas y crea listas de reproducción personalizadas. Disfruta de recomendaciones adaptadas a tu gusto y conecta con amigos. ¡Tu experiencia musical perfecta en un solo lugar!',
       version: '10.14',
@@ -45,9 +47,9 @@ const props = defineProps({
 });
 
 console.log(props.item, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-const downloadApp= (link) => {
+const downloadApp= (link:string) => {
   appStore.saveDownload(props.item.id);
-  window.open(link, '_blank')
+  window.open(configUse.value.baseURL + link, '_blank')
 }
 
 </script>
@@ -110,7 +112,7 @@ const downloadApp= (link) => {
                             <p class="font-dm  text-gray-900 dark:text-white"> <b> Tamaño:</b></p> 
                           </vs-col>
                           <vs-col vs-type="flex" vs-justify="start" vs-align="center" vs-w="12">
-                            <span class="font-dm text-sm  text-gray-700 dark:text-gray-300">  {{ props.item.tamaño}} </span> 
+                            <span class="font-dm text-sm  text-gray-700 dark:text-gray-300">  {{ parseFloat(props.item.tamaño).toFixed(2) }} MB </span> 
                           </vs-col>
                         </vs-row>
                       </vs-col>

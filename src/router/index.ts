@@ -25,6 +25,12 @@ const routes = [
     name: 'app',
     meta: { requiresAuth: true },
     component: () => import('../views/App.vue')
+  },
+  {
+    path: '/Videogames',
+    name: 'VideoGames',
+    meta: { requiresAuth: true },
+    component: () => import('../views/VideoGames.vue')
   }
 ]
 const router = createRouter({

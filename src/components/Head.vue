@@ -6,7 +6,7 @@ const authenticationStore = AuthenticationStore()
 
 <template>
 
-    <Navbar>
+    <Navbar style="position: fixed; top: 0; left: 0; right: 0; z-index: 2;">
     <template #logo>
       <NavbarLogo  alt="codeCastle logo"  image-url="/codeCastleLogo.png ">
           Code Castle
@@ -14,9 +14,9 @@ const authenticationStore = AuthenticationStore()
     </template>
     <template #default="{isShowMenu}">
       <NavbarCollapse :isShowMenu="isShowMenu">
-          <NavbarLink  isActive link="/home">Aplicaciones</NavbarLink>
-          <NavbarLink link="#">Juegos</NavbarLink>
-          <NavbarLink link="#">Top</NavbarLink>
+          <NavbarLink link="/home">Aplicaciones</NavbarLink>
+          <NavbarLink link="/videogames">Juegos</NavbarLink>
+          <NavbarLink link="/top">Top</NavbarLink>
           <NavbarLink link="#footer">Contact</NavbarLink>
         </NavbarCollapse>
     </template>

@@ -23,6 +23,7 @@ export const useAppStore = defineStore("useAppStore", {
         size: '',
         requirements: '',
         imgFile: File,
+        appFile: File,
       },
     tags: [],
     app: {},
@@ -52,12 +53,13 @@ export const useAppStore = defineStore("useAppStore", {
       }
     },
 
-    async AppList(){
+    async AppList(isApp = true){
       const preload = usePreloadStore();
       try {
         preload.isLoading = true;
 
-        const result = await axiosIns.get("/apps")
+        const result = await axiosIns.get(`/apps${isApp ? '': '?isVidegame=true'}`)
+        
         .then( (res) => {
           preload.isLoading = false;
           this.arrayApps = res.data.apps;
